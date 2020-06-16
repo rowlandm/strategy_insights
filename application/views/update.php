@@ -410,15 +410,15 @@ $(document).ready(function(){
 
             <h2 class="content-subhead">Add New Researcher Comments</h2>
             <p>
-            
+
 
                 <form class="pure-form pure-form-stacked" method="post">
                 	<dl>
                 	<dt>User:</dt><dd><select name="stakeholder_id" id="select_user"></select> </dd>
-                	<dt>Date:</dt><dd><input type="text" name="date_of_comment" id="date_of_comment" placeholder="yyyy-mm-dd"></input> </dd>
-                	<dt>Comment citation type: </dt><dd><input type="text" id="comment_citation_type" name="comment_citation_type" placeholder="eg. Correspondence, Publication, Presentation, Newspaper Article"></input> </dd>
-                	<dt>Comment citation: </dt><dd><input type="text" id="comment_citation" name="comment_citation" placeholder="eg. Name of publication or document ID DD#029"></input> </dd>
-                	<dt>Comment citation URL:</dt><dd><input type="text" id="comment_citation_url" name="comment_citation_url" placeholder="http://google.com"></input> </dd>
+                	<dt>Date:</dt><dd><input type="text" name="date_of_comment" id="date_of_comment" placeholder="yyyy-mm-dd" value="<?php if (isset( $previous_update['date_of_comment'])){ echo($previous_update['date_of_comment']); } ?>"></input> </dd>
+                	<dt>Comment citation type: </dt><dd><input type="text" id="comment_citation_type" name="comment_citation_type" placeholder="eg. Correspondence, Publication, Presentation, Newspaper Article" value="<?php if (isset( $previous_update['comment_citation_type'])){ echo($previous_update['comment_citation_type']); } ?>"></input> </dd>
+                	<dt>Comment citation: </dt><dd><input type="text" id="comment_citation" name="comment_citation" placeholder="eg. Name of publication or document ID DD#029" value="<?php if (isset( $previous_update['comment_citation'])){ echo($previous_update['comment_citation']); } ?>"></input> </dd>
+                	<dt>Comment citation URL:</dt><dd><input type="text" id="comment_citation_url" name="comment_citation_url" placeholder="http://google.com" value="<?php if (isset( $previous_update['comment_citation_url'])){ echo($previous_update['comment_citation_url']); } ?>"></input> </dd>
                 
                 	<dt>Raw Comment:</dt><dd><textarea id="raw_comment" name="raw_comment" placeholder="enter raw comment here"></textarea> </dd>
                 
