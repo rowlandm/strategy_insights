@@ -40,6 +40,7 @@ class Welcome extends CI_Controller {
 	
 	public function update()
 	{
+		$data['previous_update'] = array();
 	    
 	    if (count($_POST) > 0) {
 	        
@@ -59,8 +60,11 @@ class Welcome extends CI_Controller {
 
             $this->load->database();    
             $this->db->insert('ci_stakeholder_comments', $comment);
-            
-
+           	$data['previous_update']['stakeholder_id'] = $comment->stakeholder_id; 
+           	$data['previous_update']['date_of_comment'] = $comment->date_of_comment; 
+           	$data['previous_update']['comment_citation_type'] = $comment->comment_citation_type; 
+           	$data['previous_update']['comment_citation'] = $comment->comment_citation; 
+           	$data['previous_update']['comment_citation_url'] = $comment->comment_citation_url; 
 	    } 
 	    
 	    
