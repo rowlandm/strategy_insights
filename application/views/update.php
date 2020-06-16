@@ -308,20 +308,9 @@ function import_updated_users_data_json(){
 
 	text_data = $("#import_user_data_json").val();
 	user_data = JSON.parse(text_data);
-
-
-	for (var uid in user_data) {
-	    name = user_data[uid]["name"] ;
-	    organisation = user_data[uid]["organisation"] ;
-
-		$("#select_user").append($('<option>',{
-			value:uid,
-			text:name + " : " + organisation
-		}));
-	}
-
-
 	setup_display_from_data();
+	return;
+
 }
 
 function import_updated_users_data_json_trigger(){
@@ -414,7 +403,18 @@ $(document).ready(function(){
 
                 <form class="pure-form pure-form-stacked" method="post">
                 	<dl>
-                	<dt>User:</dt><dd><select name="stakeholder_id" id="select_user"></select> </dd>
+                	<dt>User:</dt><dd><select name="stakeholder_id" id="select_user">
+						<?php
+							foreach ($stakeholders as $stakeholder) {
+								if ($stakeholder->id == $previous_update['stakeholder_id']) { 
+									$selected = "selected";
+								} else { 
+									$selected = "";
+								}
+								echo "<option ".$selected." value='" . $stakeholder->id . "'>" . $stakeholder->honorific." ". $stakeholder->first_name . " ". $stakeholder->second_name. " : ". $stakeholder->organisation . "</option>";
+							}
+						?>
+					</select> </dd>
                 	<dt>Date:</dt><dd><input type="text" name="date_of_comment" id="date_of_comment" placeholder="yyyy-mm-dd" value="<?php if (isset( $previous_update['date_of_comment'])){ echo($previous_update['date_of_comment']); } ?>"></input> </dd>
                 	<dt>Comment citation type: </dt><dd><input type="text" id="comment_citation_type" name="comment_citation_type" placeholder="eg. Correspondence, Publication, Presentation, Newspaper Article" value="<?php if (isset( $previous_update['comment_citation_type'])){ echo($previous_update['comment_citation_type']); } ?>"></input> </dd>
                 	<dt>Comment citation: </dt><dd><input type="text" id="comment_citation" name="comment_citation" placeholder="eg. Name of publication or document ID DD#029" value="<?php if (isset( $previous_update['comment_citation'])){ echo($previous_update['comment_citation']); } ?>"></input> </dd>
