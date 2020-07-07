@@ -79,7 +79,7 @@ class Strategy extends CI_Controller {
 	        $comment->raw_comment = $_POST['raw_comment'];
 	        
 	        $temp = explode("::",$_POST['generic_comment']);
-	        
+			$comment->strategy_id = $strategy_id;	        
 	        $comment->generic_comment = $temp[0];
 	        $comment->category = $temp[1];
 
