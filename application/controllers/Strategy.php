@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use CodeIgniter\Database\Query;
+
+
 class Strategy extends CI_Controller {
 
 	/**
@@ -18,10 +20,19 @@ class Strategy extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
+
+    public function __construct()
+    {  
+		parent::__construct();
+		$this->load->library('session'); 
+    }
+
 	public function index()
 	{
-		$strategy_id = 1;
-	 
+		$this->session->set_userdata('strategy_id', 1);  
+		$strategy_id = $this->session->strategy_id;
+
 	    $this->load->database();
 	    
         $this->db->select('id, country');
@@ -44,6 +55,7 @@ class Strategy extends CI_Controller {
 	public function update()
 	{
 		$data['previous_update'] = array();
+		$strategy_id = $this->session->strategy_id;
 	    
 	    if (count($_POST) > 0) {
 	        
@@ -74,8 +86,6 @@ class Strategy extends CI_Controller {
 	    
 	    $this->load->database();
 	    
-		$strategy_id = 1;
-        
 		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholders"); 
         $data['stakeholders'] = $query->result();
