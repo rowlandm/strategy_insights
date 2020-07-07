@@ -393,7 +393,7 @@ $(document).ready(function(){
 
         <div class="content">
          
-            <h2 class="content-subhead">Update the Backend</h2>
+            <h2 class="content-subhead">Update the Backend for <?php echo $strategy_name; ?></h2>
             <p>
                 This page allows you to add new researcher comments and code them.
              

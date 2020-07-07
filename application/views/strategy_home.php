@@ -2,7 +2,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>System Strategic Planning</title>
 <link rel="stylesheet" href="public/css/pure-min-v101.css" >
 <link rel="stylesheet" href="public/css/side-menu-styles.css">
 
@@ -514,7 +514,7 @@ $(document).ready(function(){
                 A previous example of this methodology being used was the <a href="http://www.faver.edu.au/projects/how-to-best-engage-with-digital-humanities-research-in-victoria/">How to best engage with digital humanities research in Victoria?"</a> project run by the Federation for the Advancement of Victorian eResearch (FAVeR). This methodology resulted in a <a href="https://docs.google.com/document/d/1odDrLE89vRPintxHhCmP8VuRjYnQ1_ZFA179s7PmXn0/edit?usp=sharing">preliminary report of needs for digital humanities research in Victoria</a>. This report was then use to encourage researchers and funders to see the opportunities in the digital humanities community.
             </p>
 
-            <h2 class="content-subhead">Current Synthesis of Needs- Demo</h2>
+            <h2 class="content-subhead">Current Synthesis of Needs- <?php echo $strategy_name;?></h2>
             <p>
             
             This is the most up to date synthesis of needs. It is based on previous presentations, documents, newspaper articles and first-hand interviews.    

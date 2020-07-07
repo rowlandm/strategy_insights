@@ -46,7 +46,7 @@ class Strategy extends CI_Controller {
         
         // Now need to convert this to JSON
         $data['records'] = json_encode($stakeholder_comments);
-        
+       	$data['strategy_name'] = $this->session->strategy_name; 
 	    $this->load->view('strategy_home',$data);
     
 	}
@@ -56,6 +56,12 @@ class Strategy extends CI_Controller {
 	    if (count($_GET) > 0) {
 	        $new_strategy_id = $_GET['strategy_id'];
 			$this->session->set_userdata('strategy_id',$new_strategy_id);
+
+			$this->load->database();
+			$this->db->where('id =', $new_strategy_id);
+			$query = $this->db->get("strategies"); 
+			$strategies = $query->result();
+			$this->session->set_userdata('strategy_name',$strategies[0]->name);
 		}
 
 		$this->load->helper('url');
@@ -107,6 +113,7 @@ class Strategy extends CI_Controller {
         
         // Now need to convert this to JSON
         $data['records'] = json_encode($stakeholder_comments);
+       	$data['strategy_name'] = $this->session->strategy_name; 
         
 	    $this->load->view('update',$data);
     
