@@ -485,7 +485,8 @@ $(document).ready(function(){
             <ul class="pure-menu-list">
                 <li class="pure-menu-item"><a href="" class="pure-menu-link">Home</a></li>
                 <li class="pure-menu-item"><a href="strategy/update" class="pure-menu-link">Update</a></li>
-
+                <li class="pure-menu-item"><a href="strategy/change_strategy?strategy_id=1" class="pure-menu-link">Strategy 1</a></li>
+                <li class="pure-menu-item"><a href="strategy/change_strategy?strategy_id=2" class="pure-menu-link">Strategy 2</a></li>
             </ul>
         </div>
     </div>

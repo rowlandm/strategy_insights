@@ -30,7 +30,6 @@ class Strategy extends CI_Controller {
 
 	public function index()
 	{
-		$this->session->set_userdata('strategy_id', 1);  
 		$strategy_id = $this->session->strategy_id;
 
 	    $this->load->database();
@@ -50,6 +49,17 @@ class Strategy extends CI_Controller {
         
 	    $this->load->view('strategy_home',$data);
     
+	}
+	
+	public function change_strategy()
+	{
+	    if (count($_GET) > 0) {
+	        $new_strategy_id = $_GET['strategy_id'];
+			$this->session->set_userdata('strategy_id',$new_strategy_id);
+		}
+
+		$this->load->helper('url');
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 	
 	public function update()
