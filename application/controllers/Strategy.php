@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use CodeIgniter\Database\Query;
-class Welcome extends CI_Controller {
+class Strategy extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -34,7 +34,7 @@ class Welcome extends CI_Controller {
         // Now need to convert this to JSON
         $data['records'] = json_encode($stakeholder_comments);
         
-	    $this->load->view('welcome',$data);
+	    $this->load->view('strategy_home',$data);
     
 	}
 	
