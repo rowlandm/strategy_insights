@@ -20,14 +20,17 @@ class Strategy extends CI_Controller {
 	 */
 	public function index()
 	{
+		$strategy_id = 1;
 	 
 	    $this->load->database();
 	    
         $this->db->select('id, country');
+		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholders"); 
         $data['stakeholders'] = $query->result();
         
         $this->db->select('id, stakeholder_id, comment_citation_type, generic_comment, category');
+		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholder_comments"); 
         $stakeholder_comments = $query->result();
         
@@ -71,11 +74,14 @@ class Strategy extends CI_Controller {
 	    
 	    $this->load->database();
 	    
+		$strategy_id = 1;
         
+		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholders"); 
         $data['stakeholders'] = $query->result();
         
         
+		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholder_comments"); 
         $stakeholder_comments = $query->result();
         
