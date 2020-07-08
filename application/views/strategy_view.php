@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 
 <meta charset="utf-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>System Strategic Planning</title>
 <link rel="stylesheet" href="../public/css/pure-min-v101.css" >
 <link rel="stylesheet" href="../public/css/side-menu-styles.css">
+
 
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+	
 <style>
 body {
   padding: 20px;
   
 }
 dt { width: 200px; float: left;}
+input[type=text] {
+
+	width: 600px;
+
+}
 
 textarea {
 
@@ -24,8 +29,6 @@ textarea {
 	height: 100px;
 
 }
-
-#generic_comment {width: 600px};
 
 div.category_title {
 
@@ -48,6 +51,8 @@ li.raw_comment {
 	display:none;
 }
 
+button { display:none};
+
 #export_to_users,#export_to_word {
 	display:none;
 }
@@ -66,7 +71,7 @@ var generic_comments = [];
 
 function setup_display_from_data(){
 
-	anonymise = $("#anonymise").is(':checked');
+	anonymise = true;
 	
 	data_by_user = {};
 
@@ -76,6 +81,8 @@ function setup_display_from_data(){
 	
 	generic_comments = []; // reset generic_comments for autocomplete
 	type_totals = {};
+	country_totals = {};
+	comment_citation_type_totals = {};
 
 	// Calculate Category totals.
 	data_by_categories ={};
@@ -109,6 +116,19 @@ function setup_display_from_data(){
 			
 		}
 		
+			
+        if (comment_citation_type_totals.hasOwnProperty(comment["comment_citation_type"])){
+			
+            comment_citation_type_totals[comment["comment_citation_type"]]["number_of_comments_total"] = comment_citation_type_totals[comment["comment_citation_type"]]["number_of_comments_total"] + 1;
+			
+		} else {
+			comment_citation_type_totals[comment["comment_citation_type"]] = {};
+			comment_citation_type_totals[comment["comment_citation_type"]]["number_of_comments_total"] = 1;
+			
+		}
+		
+		
+		
 		if (data_by_user.hasOwnProperty(comment["stakeholder_id"])){ // existing user_comments
 			data_by_user[comment["stakeholder_id"]].push(counter);
 		}else {
@@ -131,7 +151,22 @@ function setup_display_from_data(){
 			type_totals[user["type"]]["stakeholder_ids"] = [comment["stakeholder_id"]];
 
 		}
-		
+
+        if (country_totals.hasOwnProperty(user["country"])){
+			
+
+
+		    if (country_totals[user["country"]]["stakeholder_ids"].indexOf(comment["stakeholder_id"]) == -1){
+		        	country_totals[user["country"]]["stakeholder_ids"].push(comment["stakeholder_id"]);
+		        	country_totals[user["country"]]["number_of_users_total"] = country_totals[user["country"]]["number_of_users_total"] + 1;
+			}
+		} else {
+			country_totals[user["country"]] = {};
+			country_totals[user["country"]]["number_of_users_total"] = 1;
+			country_totals[user["country"]]["stakeholder_ids"] = [comment["stakeholder_id"]];
+
+		}
+
 	}
 	
 	data_by_categories_keys_sorted = Object.keys(data_by_categories).sort(function(a,b){return data_by_categories[b].total-data_by_categories[a].total})
@@ -175,7 +210,7 @@ function setup_display_from_data(){
 						comments_data_index = data_by_categories[category]["generic_comments"][generic_comment]["array_index_of_comments"][array_index_of_comment];
 
 
-						comment_uid = comments_data[comments_data_index]["stakeholder_id"];
+						comment_uid = comments_data[comments_data_index]["uid"];
 						
 						comment_user_name = user_data[comment_uid]["name"];
 						comment_user_organisation = user_data[comment_uid]["organisation"];
@@ -226,10 +261,28 @@ function setup_display_from_data(){
 	
 	temp_html = "";
 	for (type in type_totals){
-		temp_html = temp_html + " Number of "+type +" comments:" + type_totals[type]["number_of_comments_total"] + " Number of individual "+type+"(s):" + type_totals[type]["stakeholder_ids"].length + "<br/>";
+		temp_html = temp_html + " Number of "+type +" comments: " + type_totals[type]["number_of_comments_total"] + "<br/>Number of individual "+type+"(s): " + type_totals[type]["stakeholder_ids"].length + "<br/>";
 	}
-
-	$("#type_totals").append(temp_html);
+	
+	$("#type_totals").html(temp_html);
+	
+	
+	temp_html = "";
+	for (country in country_totals){
+		temp_html = temp_html + " Number of providers of feedback from "+country +": " + country_totals[country]["number_of_users_total"] + "<br/>";
+	}
+	
+	$("#country_totals").html(temp_html);
+	
+	
+	temp_html = "";
+	for (comment_citation_type in comment_citation_type_totals){
+		temp_html = temp_html + " Number of comments from "+comment_citation_type +"(s): " + comment_citation_type_totals[comment_citation_type]["number_of_comments_total"] + "<br/>";
+	}
+	
+	$("#comment_citation_type_totals").html(temp_html);
+	
+	
 	
 	$('div.category_title').click(function(){
 		
@@ -241,6 +294,54 @@ function setup_display_from_data(){
 
 };
 
+function submit_new_comment_trigger(){
+
+	
+
+	$('form').on("submit",function(event){
+		event.preventDefault();
+		initial_generic_comment = $("#generic_comment").val();
+		raw_comment = $("#raw_comment").val();
+		date_of_comment = $("#date_of_comment").val();
+		comment_citation = $("#comment_citation").val();
+		comment_citation_url = $("#comment_citation_url").val();
+		user_id = $("#select_user").val();
+
+
+		// split generic comment ie. generic_comment::category from autocomplete
+		temp_comment = initial_generic_comment.split("::");
+		generic_comment = temp_comment[0];
+		category = temp_comment[1];
+		
+		var count_attibutes_in_user_data = 0;
+		for (var property_key in user_data) {
+			if (user_data.hasOwnProperty(property_key)) {
+			   ++count_attibutes_in_user_data;
+			}
+		}
+
+		//full_name = $("#full_name").val();
+		//email = $("#email").val();
+		//organisation = $("#organisation").val();
+		//next_uid = count_attibutes_in_user_data + 1;
+		
+		
+		new_comment = {"uid":user_id,"date_of_comment":"", "comment_citation":"", "comment_citation_url":"","raw_comment":raw_comment,"generic_comment":generic_comment,"category":category,"comment_citation":comment_citation,"comment_citation_url":comment_citation_url,"date_of_comment":date_of_comment};
+		
+		
+		
+		comments_data = comments_data.concat(new_comment);
+		
+		setup_display_from_data(comments_data,user_data);
+		
+		
+
+	}); 
+	
+	
+
+	
+}
 
 function export_updated_comments_data_json_trigger(){
 
@@ -308,9 +409,20 @@ function import_updated_users_data_json(){
 
 	text_data = $("#import_user_data_json").val();
 	user_data = JSON.parse(text_data);
-	setup_display_from_data();
-	return;
 
+
+	for (var uid in user_data) {
+	    name = user_data[uid]["name"] ;
+	    organisation = user_data[uid]["organisation"] ;
+
+		$("#select_user").append($('<option>',{
+			value:uid,
+			text:name + " : " + organisation
+		}));
+	}
+
+
+	//setup_display_from_data();
 }
 
 function import_updated_users_data_json_trigger(){
@@ -339,31 +451,26 @@ $(document).ready(function(){
 	export_updated_comments_data_json_trigger();
 	import_updated_comments_data_json_trigger();
 	clear_data_and_save_trigger();
-	
+	submit_new_comment_trigger();
 	
 	export_updated_users_data_json_trigger();
 	import_updated_users_data_json_trigger();
 	
-	$("#anonymise").click(function(){
-		setup_display_from_data();
-		
-	});
+
 	
-	$("#show_export_to_word").click(function(){ 
-		$("#export_to_word").toggle(); 
-		$("#category_list_div").toggle(); 
-	});
 	
-	$("#show_export_to_users").click(function(){ 
-		$("#export_to_users").toggle(); 
-		$("#category_list_div").toggle(); 
-	});
-	
+	$("#export_to_word").show();
+	$("#export_to_users").hide();  
+	$("#category_list_div").hide(); 
+
+
 	setup_autocomplete_generic_comment();
+	setup_display_from_data();
 });
 </script>
 
 <body>
+
 <div id="layout">
     <!-- Menu toggle -->
     <a href="#menu" id="menuLink" class="menu-link">
@@ -387,105 +494,25 @@ $(document).ready(function(){
 					}
 
 				?>
-
             </ul>
         </div>
     </div>
 
     <div id="main">
-        <div class="content">
-         
-            <h2 class="content-subhead">Update the Backend for <?php echo $strategy->name; ?></h2>
+		<?php echo($strategy->description);?>
+
+		<div class="content"> 
+            <h2 class="content-subhead">Current Synthesis of Needs- <?php echo $strategy->name;?></h2>
             <p>
-                This page allows you to add new researcher comments and code them.
-             
-            </p>
-
-            <h2 class="content-subhead">Add New Researcher Comments</h2>
-            <p>
-
-
-                <form class="pure-form pure-form-stacked" method="post">
-                	<dl>
-                	<dt>User:</dt><dd><select name="stakeholder_id" id="select_user">
-						<?php
-							foreach ($stakeholders as $stakeholder) {
-								if ($stakeholder->id == $previous_update['stakeholder_id']) { 
-									$selected = "selected";
-								} else { 
-									$selected = "";
-								}
-								echo "<option ".$selected." value='" . $stakeholder->id . "'>" . $stakeholder->honorific." ". $stakeholder->first_name . " ". $stakeholder->second_name. " : ". $stakeholder->organisation . "</option>";
-							}
-						?>
-					</select> </dd>
-                	<dt>Date:</dt><dd><input type="text" name="date_of_comment" id="date_of_comment" placeholder="yyyy-mm-dd" value="<?php if (isset( $previous_update['date_of_comment'])){ echo($previous_update['date_of_comment']); } ?>"></input> </dd>
-                	<dt>Comment citation type: </dt><dd><input type="text" id="comment_citation_type" name="comment_citation_type" placeholder="eg. Correspondence, Publication, Presentation, Newspaper Article" value="<?php if (isset( $previous_update['comment_citation_type'])){ echo($previous_update['comment_citation_type']); } ?>"></input> </dd>
-                	<dt>Comment citation: </dt><dd><input type="text" id="comment_citation" name="comment_citation" placeholder="eg. Name of publication or document ID DD#029" value="<?php if (isset( $previous_update['comment_citation'])){ echo($previous_update['comment_citation']); } ?>"></input> </dd>
-                	<dt>Comment citation URL:</dt><dd><input type="text" id="comment_citation_url" name="comment_citation_url" placeholder="http://google.com" value="<?php if (isset( $previous_update['comment_citation_url'])){ echo($previous_update['comment_citation_url']); } ?>"></input> </dd>
-                
-                	<dt>Raw Comment:</dt><dd><textarea id="raw_comment" name="raw_comment" placeholder="enter raw comment here"></textarea> </dd>
-                
-                	<dt>Generic Comment:</dt><dd><input type="text" id="generic_comment" name="generic_comment" placeholder="Start typing for autocomplete"></input> </dd>
-                
-                
-                	<input id="add_new_comment" type="submit"/>
-                	</dl>	
-                
-                </form>
-            </p>
             
-            <h2 class="content-subhead">Current Survey Synthesis of Needs</h2>
-            <p>
-
-                <h1>Display</h1>
-                <div id="type_totals"></div>
-                <button id="show_export_to_word">Export to Word</button></br></br>
-                <button id="show_export_to_users">Export to Users (per User)</button></br></br>
-                <input type="checkbox" id="anonymise" value="anonymise">Anonymise</br></br>
-                <div id="category_list_div"></div>
-                <div id="export_to_word"></div>
-                <div id="export_to_users"></div>
+            This is the most up to date synthesis of needs. It is based on previous presentations, documents, newspaper articles and first-hand interviews.    
                 
-                
-                <form name="update" method="post">
-                
-                <textarea style="display:none;margin-top:30px;" name="updated_data" id="export_updated_comments_data_json"> </textarea>
-                <br/><br/><button id="export_updated_comments_data_json_button">Save Changes </button>
-                </form>
-                <br/>
-                <br/><br/>
-                
-                <button id="clear_data_and_save_button" disabled>Clear Data and Save</button></br>
-                <br/><br/>
-                <textarea id="import_comments_data_json" style="display:none">
-                <?php
-                echo $records;
-                ?>
-                </textarea>
-                <textarea id="import_frm_comments_data_json" style="display:none">
-                []
-                </textarea>
-                
-                
-                <textarea id="import_user_data_json" style="display:none">
-                <?php 
-                $stakeholder_json_string="{";
-                foreach ($stakeholders as &$stakeholder) {
-                    
-                    $temp_string = "\"$stakeholder->id\":{";
-                    $temp_string .= "\"uid\":".$stakeholder->id.",";
-                    $temp_string .= "\"name\":\"".$stakeholder->honorific." ".$stakeholder->first_name." ".$stakeholder->second_name."\",";
-                    $temp_string .= "\"organisation\":\"".$stakeholder->organisation."\"";
-                    $temp_string .="},";
-                    $stakeholder_json_string .= $temp_string;
-                }
-                $stakeholder_json_string = substr($stakeholder_json_string, 0, -1); // remove last character
-                
-                $stakeholder_json_string .= "}";
-                echo $stakeholder_json_string;
-                ?>
-                </textarea>            
+            <div id="type_totals"></div>
+            <div id="country_totals"></div>
+            <div id="comment_citation_type_totals"></div>
+            <div id="category_list_div"></div>
+            <div id="export_to_word"></div>
+            <div id="export_to_users"></div>
             </p>
 
         </div>
@@ -498,9 +525,39 @@ $(document).ready(function(){
 
 
 
+<textarea id="import_comments_data_json" style="display:none">
+<?php
+echo $records;
+?>
+</textarea>
+<textarea id="import_frm_comments_data_json" style="display:none">
+[]
+</textarea>
 
 
+<textarea id="import_user_data_json" style="display:none">
+<?php 
+$stakeholder_json_string="{";
+foreach ($stakeholders as &$stakeholder) {
+    
+    $temp_string = "\"$stakeholder->id\":{";
+    $temp_string .= "\"uid\":".$stakeholder->id.",";
+    $temp_string .= "\"type\":\"researcher\","; // this needs to be added to the database.
+    $temp_string .= "\"name\":\"\",";
+    $temp_string .= "\"organisation\":\"".$stakeholder->country."\",";
+    $temp_string .= "\"country\":\"".$stakeholder->country."\"";
+    $temp_string .="},";
+    $stakeholder_json_string .= $temp_string;
+}
+$stakeholder_json_string = substr($stakeholder_json_string, 0, -1); // remove last character
 
+$stakeholder_json_string .= "}";
+echo $stakeholder_json_string;
+?>
+</textarea>
+
+<br/>
+<br/>
 
 
 </body>
