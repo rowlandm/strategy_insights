@@ -56,6 +56,11 @@ class Strategy extends CI_Controller {
 		$strategy_id = $this->session->strategy_id;
 
 	    $this->load->database();
+
+		$this->db->where('id =', $strategy_id);
+		$query = $this->db->get("strategies"); 
+		$strategies = $query->result();
+		$data['strategies'] = $strategies;
 	    
         $this->db->select('id, country');
 		$this->db->where('strategy_id =', $strategy_id);

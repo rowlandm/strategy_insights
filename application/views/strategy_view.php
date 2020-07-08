@@ -492,6 +492,9 @@ $(document).ready(function(){
     </div>
 
     <div id="main">
+			<?php echo $strategies[0]->description; ?>
+
+		<div class="content"> 
             <h2 class="content-subhead">Current Synthesis of Needs- <?php echo $strategy_name;?></h2>
             <p>
             
