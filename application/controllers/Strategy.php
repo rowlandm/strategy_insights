@@ -32,6 +32,15 @@ class Strategy extends CI_Controller {
 	{
 		$strategy_id = $this->session->strategy_id;
 
+		if ($this->session->strategies === NULL){
+			$this->load->database();
+			$this->db->select('id, name');
+			$query = $this->db->get("strategies"); 
+			$strategies = $query->result();
+			$this->session->set_userdata('strategies',$strategies);
+		}
+
+
 	    $this->load->database();
 	    
         $this->db->select('id, country');
