@@ -506,13 +506,6 @@ $(document).ready(function(){
             </p>
 
         </div>
-        <div class="content">
-         
-            <h2 class="content-subhead">Software behind this website</h2>
-            <p>
-                The software is open source and available via <a href="https://doi.org/10.6084/m9.figshare.12237410">Figshare</a> and <a href="https://github.com/rowlandm/strategy_insights">github</a>.
-	    </p>
-	</div>
     </div>
 </div>
 
