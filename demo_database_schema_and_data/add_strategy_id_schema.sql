@@ -27,3 +27,5 @@ ALTER TABLE `ci_strategies`
 --
 ALTER TABLE `ci_strategies`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `ci_strategies` ADD `description` TEXT NOT NULL AFTER `name`;
