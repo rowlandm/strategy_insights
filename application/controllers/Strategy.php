@@ -43,10 +43,11 @@ class Strategy extends CI_Controller {
 		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholder_comments"); 
         $stakeholder_comments = $query->result();
+
+		$data['strategies'] = $this->session->strategies;
         
         // Now need to convert this to JSON
         $data['records'] = json_encode($stakeholder_comments);
-       	$data['strategy_name'] = $this->session->strategy_name; 
 	    $this->load->view('strategy_home',$data);
     
 	}
@@ -60,7 +61,9 @@ class Strategy extends CI_Controller {
 		$this->db->where('id =', $strategy_id);
 		$query = $this->db->get("strategies"); 
 		$strategies = $query->result();
-		$data['strategies'] = $strategies;
+		$data['strategy'] = $strategies[0];
+
+		$data['strategies'] = $this->session->strategies;
 	    
         $this->db->select('id, country');
 		$this->db->where('strategy_id =', $strategy_id);
@@ -86,10 +89,10 @@ class Strategy extends CI_Controller {
 			$this->session->set_userdata('strategy_id',$new_strategy_id);
 
 			$this->load->database();
-			$this->db->where('id =', $new_strategy_id);
+			$this->db->select('id, name');
 			$query = $this->db->get("strategies"); 
 			$strategies = $query->result();
-			$this->session->set_userdata('strategy_name',$strategies[0]->name);
+			$this->session->set_userdata('strategies',$strategies);
 		}
 
 		$this->load->helper('url');
@@ -133,7 +136,15 @@ class Strategy extends CI_Controller {
 		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholders"); 
         $data['stakeholders'] = $query->result();
-        
+
+		$data['strategies'] = $this->session->strategies;
+
+
+        $this->db->where('id =', $strategy_id);
+		$query = $this->db->get("strategies"); 
+		$strategies = $query->result();
+		$data['strategy'] = $strategies[0];
+ 
         
 		$this->db->where('strategy_id =', $strategy_id);
         $query = $this->db->get("stakeholder_comments"); 
@@ -141,7 +152,6 @@ class Strategy extends CI_Controller {
         
         // Now need to convert this to JSON
         $data['records'] = json_encode($stakeholder_comments);
-       	$data['strategy_name'] = $this->session->strategy_name; 
         
 	    $this->load->view('update',$data);
     

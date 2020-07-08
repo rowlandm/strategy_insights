@@ -485,8 +485,17 @@ $(document).ready(function(){
             <ul class="pure-menu-list">
                 <li class="pure-menu-item"><a href="" class="pure-menu-link">Home</a></li>
                 <li class="pure-menu-item"><a href="strategy/update" class="pure-menu-link">Update</a></li>
-                <li class="pure-menu-item"><a href="strategy/change_strategy?strategy_id=1" class="pure-menu-link">Strategy 1</a></li>
-                <li class="pure-menu-item"><a href="strategy/change_strategy?strategy_id=2" class="pure-menu-link">Strategy 2</a></li>
+
+				<?php 
+
+					foreach ($strategies as &$strategy_object) {
+						echo('<li class="pure-menu-item"><a href="strategy/change_strategy?strategy_id='.$strategy_object->id.'"
+								class="pure-menu-link">Strategy '.$strategy_object->name.'</a></li>');
+
+					}
+
+				?>
+
             </ul>
         </div>
     </div>

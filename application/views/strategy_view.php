@@ -485,17 +485,24 @@ $(document).ready(function(){
             <ul class="pure-menu-list">
                 <li class="pure-menu-item"><a href="../" class="pure-menu-link">Home</a></li>
                 <li class="pure-menu-item"><a href="../strategy/update" class="pure-menu-link">Update</a></li>
-                <li class="pure-menu-item"><a href="../strategy/change_strategy?strategy_id=1" class="pure-menu-link">Strategy 1</a></li>
-                <li class="pure-menu-item"><a href="../strategy/change_strategy?strategy_id=2" class="pure-menu-link">Strategy 2</a></li>
+				<?php 
+
+					foreach ($strategies as &$strategy_object) {
+						echo('<li class="pure-menu-item"><a href="../strategy/change_strategy?strategy_id='.$strategy_object->id.'"
+								class="pure-menu-link">Strategy '.$strategy_object->name.'</a></li>');
+
+					}
+
+				?>
             </ul>
         </div>
     </div>
 
     <div id="main">
-			<?php echo $strategies[0]->description; ?>
+		<?php echo($strategy->description);?>
 
 		<div class="content"> 
-            <h2 class="content-subhead">Current Synthesis of Needs- <?php echo $strategy_name;?></h2>
+            <h2 class="content-subhead">Current Synthesis of Needs- <?php echo $strategy->name;?></h2>
             <p>
             
             This is the most up to date synthesis of needs. It is based on previous presentations, documents, newspaper articles and first-hand interviews.    
