@@ -3,8 +3,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>System Strategic Planning</title>
-<link rel="stylesheet" href="public/css/pure-min-v101.css" >
-<link rel="stylesheet" href="public/css/side-menu-styles.css">
+<link rel="stylesheet" href="../public/css/pure-min-v101.css" >
+<link rel="stylesheet" href="../public/css/side-menu-styles.css">
 
 
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -483,35 +483,26 @@ $(document).ready(function(){
             <a class="pure-menu-heading" href="#">Insights</a>
 
             <ul class="pure-menu-list">
-                <li class="pure-menu-item"><a href="" class="pure-menu-link">Home</a></li>
-                <li class="pure-menu-item"><a href="strategy/update" class="pure-menu-link">Update</a></li>
-                <li class="pure-menu-item"><a href="strategy/change_strategy?strategy_id=1" class="pure-menu-link">Strategy 1</a></li>
-                <li class="pure-menu-item"><a href="strategy/change_strategy?strategy_id=2" class="pure-menu-link">Strategy 2</a></li>
+                <li class="pure-menu-item"><a href="../" class="pure-menu-link">Home</a></li>
+                <li class="pure-menu-item"><a href="../strategy/update" class="pure-menu-link">Update</a></li>
+                <li class="pure-menu-item"><a href="../strategy/change_strategy?strategy_id=1" class="pure-menu-link">Strategy 1</a></li>
+                <li class="pure-menu-item"><a href="../strategy/change_strategy?strategy_id=2" class="pure-menu-link">Strategy 2</a></li>
             </ul>
         </div>
     </div>
 
     <div id="main">
-        <div class="header">
-            <h1>Systematic Strategic Planning</h1>
-            <h2>Demo website for advocacy based Strategic Planning</h2>
-        </div>
-
-        <div class="content">
-         
-            <h2 class="content-subhead">Methodology behind this website</h2>
+            <h2 class="content-subhead">Current Synthesis of Needs- <?php echo $strategy_name;?></h2>
             <p>
-                This is an example of the systematic way of providing advocacy in strategic planning.
+            
+            This is the most up to date synthesis of needs. It is based on previous presentations, documents, newspaper articles and first-hand interviews.    
                 
-                It is based off the presentation: 
-                
-                <a href="https://figshare.com/articles/Strategic_Planning_using_a_Change_Management_Lifecycle_Framework/12199856">"Strategic Planning using a Change Management Lifecycle Framework"</a>.
-                <br/><br/>
-                This presentation discusses how to provide feedback to the meso and micro levels systematically. It also highlights that providing stakeholders with an update on the feedback provided by others in an anonymous way helps build relationships and trust with the stakeholders.
-                <br/><br/>
-                With this information, we can share more widely with the community in an acceptable way that guards the privacy of our stakeholders who have provided feedback. 
-                <br/><br/>
-                A previous example of this methodology being used was the <a href="http://www.faver.edu.au/projects/how-to-best-engage-with-digital-humanities-research-in-victoria/">How to best engage with digital humanities research in Victoria?"</a> project run by the Federation for the Advancement of Victorian eResearch (FAVeR). This methodology resulted in a <a href="https://docs.google.com/document/d/1odDrLE89vRPintxHhCmP8VuRjYnQ1_ZFA179s7PmXn0/edit?usp=sharing">preliminary report of needs for digital humanities research in Victoria</a>. This report was then use to encourage researchers and funders to see the opportunities in the digital humanities community.
+            <div id="type_totals"></div>
+            <div id="country_totals"></div>
+            <div id="comment_citation_type_totals"></div>
+            <div id="category_list_div"></div>
+            <div id="export_to_word"></div>
+            <div id="export_to_users"></div>
             </p>
 
         </div>

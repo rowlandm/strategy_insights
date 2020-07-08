@@ -50,7 +50,30 @@ class Strategy extends CI_Controller {
 	    $this->load->view('strategy_home',$data);
     
 	}
-	
+
+	public function view()
+	{
+		$strategy_id = $this->session->strategy_id;
+
+	    $this->load->database();
+	    
+        $this->db->select('id, country');
+		$this->db->where('strategy_id =', $strategy_id);
+        $query = $this->db->get("stakeholders"); 
+        $data['stakeholders'] = $query->result();
+        
+        $this->db->select('id, stakeholder_id, comment_citation_type, generic_comment, category');
+		$this->db->where('strategy_id =', $strategy_id);
+        $query = $this->db->get("stakeholder_comments"); 
+        $stakeholder_comments = $query->result();
+        
+        // Now need to convert this to JSON
+        $data['records'] = json_encode($stakeholder_comments);
+       	$data['strategy_name'] = $this->session->strategy_name; 
+	    $this->load->view('strategy_view',$data);
+    
+	}
+		
 	public function change_strategy()
 	{
 	    if (count($_GET) > 0) {
@@ -65,7 +88,7 @@ class Strategy extends CI_Controller {
 		}
 
 		$this->load->helper('url');
-		redirect($_SERVER['HTTP_REFERER']);
+		redirect('strategy/view');
 	}
 	
 	public function update()

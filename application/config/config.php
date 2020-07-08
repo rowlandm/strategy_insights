@@ -35,7 +35,7 @@ $config['base_url'] = 'http://www.rowlandm.com/strategy_insights_demo_dev/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
